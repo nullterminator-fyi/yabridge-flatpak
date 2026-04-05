@@ -9,12 +9,10 @@ command: yabridgectl
 
 add-extensions:
   org.freedesktop.LinuxAudio.Plugins.yabridge:
-    version: "5.1.1"
-    base: org.winehq.Wine
+    version: "25.08"
     directory: extensions/Plugins/yabridge
     add-ld-path: lib
     bundle: true
-    no-autodownload: false
     autodelete: false
 
 modules:
