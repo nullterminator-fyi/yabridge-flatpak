@@ -24,14 +24,14 @@ buildsystem: simple
 build-commands:
   # Kron4ek/Wine-Builds builds with g++-11 :sob:
   # https://github.com/Kron4ek/Wine-Builds/issues/78
-  - mkdir -p "${FLATPAK_DEST}/bin"
-  - ln -sf /usr/bin/gcc "${FLATPAK_DEST}/bin/gcc-11"
-  - ln -sf /usr/bin/g++ "${FLATPAK_DEST}/bin/g++-11"
-  - cp -r * /app
+  - mkdir -p "${FLATPAK_DEST}/extensions/Plugins/yabridge/bin"
+  - ln -sf /usr/bin/gcc "${FLATPAK_DEST}/extensions/Plugins/yabridge/bin/gcc-11"
+  - ln -sf /usr/bin/g++ "${FLATPAK_DEST}/extensions/Plugins/yabridge/bin/g++-11"
+  - cp -r * "${FLATPAK_DEST}/extensions/Plugins/yabridge"
 sources:
   - type: archive
     url: https://github.com/Kron4ek/Wine-Builds/releases/download/11.5/wine-11.5-amd64.tar.xz
     sha256: fe79b3cf04ac1f5a3b500762b0c08271ba46f3d298e80b6fbc485b9ca2bf6f8e
 cleanup:
-  - "/bin/gcc-11"
-  - "/bin/g++-11"
+  - "/app/extensions/Plugins/yabridge/bin/gcc-11"
+  - "/app/extensions/Plugins/yabridge/bin/g++-11"
