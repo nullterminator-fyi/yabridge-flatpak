@@ -1,0 +1,21 @@
+diff --git a/meson.build b/meson.build
+index 12ecb97..f9cdf97 100644
+--- a/meson.build
++++ b/meson.build
+@@ -96,7 +96,7 @@ wine_compiler_options = [
+ # NOTE: GCC doesn't 8-byte align doubles in structs on x86 for ABI-compatibilty
+ #       reasons, but MSVC++ does. We need to force this same alignment to be
+ #       ABI-compatible with 32-bit binaries created with MSVC++ on Windows.
+-wine_32bit_compiler_options = wine_compiler_options + ['-m32', '-malign-double']
++wine_32bit_compiler_options = wine_compiler_options + ['-m32', '-malign-double', '-bi686-unknown-linux-gnu']
+ wine_64bit_compiler_options = wine_compiler_options + ['-m64']
+ 
+ # Enable addition assertions on the STL containers during debug builds. Meson
+@@ -380,6 +380,6 @@ if with_bitbridge
+     include_directories : include_dir,
+     dependencies : host_32bit_deps,
+     cpp_args : compiler_options + wine_32bit_compiler_options,
+-    link_args : ['-m32'],
++    link_args : ['-m32', '-bi686-unknown-linux-gnu'],
+   )
+ endif

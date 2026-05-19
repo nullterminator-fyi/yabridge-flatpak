@@ -3,6 +3,8 @@ runtime: org.freedesktop.Platform
 runtime-version: "25.08"
 sdk: org.freedesktop.Sdk
 sdk-extensions:
+  - org.freedesktop.Sdk.Compat.i386
+  - org.freedesktop.Sdk.Extension.toolchain-i386
   - org.freedesktop.Sdk.Extension.mingw-w64
   - org.freedesktop.Sdk.Extension.rust-stable
 command: yabridgectl
@@ -23,12 +25,18 @@ modules:
     build-options:
       append-path: /app/extensions/Plugins/yabridge/bin
       append-ld-library-path: /app/extensions/Plugins/yabridge/lib
+      # Make sure 32-bit dependencies are on pkg-config search path
+      prepend-pkg-config-path: /usr/lib/x86_64-linux-gnu/pkgconfig:/usr/lib/i386-linux-gnu/pkgconfig
+      # Add the cross-compiler to PATH
+      prepend-path: /usr/lib/sdk/toolchain-i386/bin
+
     config-opts:
       - --buildtype=release
       - --cross-file=../cross-wine.conf
+      - -Dbitbridge=true
     post-install:
       - mkdir -p ${FLATPAK_DEST}/extensions/Plugins/yabridge
-      - install yabridge-host.exe{,.so} -Dt "${FLATPAK_DEST}/extensions/Plugins/yabridge/bin"
+      - install yabridge-host{,-32}.exe{,.so} -Dt "${FLATPAK_DEST}/extensions/Plugins/yabridge/bin"
       - install libyabridge{,-chainloader}-{vst2,vst3,clap}.so -Dt "${FLATPAK_DEST}/extensions/Plugins/yabridge/lib"
     sources:
       - type: git
@@ -38,6 +46,9 @@ modules:
         url: https://github.com/robbert-vdh/vst3sdk.git
         tag: "v3.7.7_build_19-patched"
         dest: subprojects/vst3
+      # TODO: Get rid of this once we start building wine on our own
+      - type: patch
+        path: use-32bit-gcc.patch
     modules:
       - name: asio
         buildsystem: autotools
